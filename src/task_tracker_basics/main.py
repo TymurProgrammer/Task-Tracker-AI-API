@@ -1,14 +1,16 @@
-from task_tracker_basics.task import Task
-from task_tracker_basics.ai_client import AIMockClient
 import asyncio
 import time
-from task_tracker_basics.http_fetch import fetch_all
-from task_tracker_basics.http_fetch import fetch_sequential
+
+from task_tracker_basics.ai_client import AIMockClient
+from task_tracker_basics.http_fetch import fetch_all, fetch_sequential
+from task_tracker_basics.task import Task
+
 
 async def summarize_all(tasks: list[Task], client: AIMockClient) -> list[str]:
     coroutines = [client(task) for task in tasks]
     results = await asyncio.gather(*coroutines)
     return results
+
 
 def main():
     start = time.perf_counter()
@@ -46,7 +48,6 @@ def main():
     end = time.perf_counter()
     print(statuses)
     print(f"Час HTTP-запитів: {end - start:.2f} сек")
-    
 
 
 if __name__ == "__main__":

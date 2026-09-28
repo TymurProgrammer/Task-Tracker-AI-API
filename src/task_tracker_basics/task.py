@@ -11,9 +11,3 @@ class Task:
         if not isinstance(other, Task):
             return NotImplemented
         return self.task_id == other.task_id
-    
-
-    
-
-
-
