@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from task_tracker_basics.auth.security import decode_token
 from task_tracker_basics.database import get_db_session
 from task_tracker_basics.models import UserORM
+from task_tracker_basics.crud import get_user_by_id
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
@@ -26,7 +27,7 @@ async def get_current_user(
     except jwt.InvalidTokenError:
         raise credentials_exception
 
-    user = await session.get(UserORM, user_id)
+    user = await get_user_by_id(UserORM)
     if user is None:
         raise credentials_exception
     return user
