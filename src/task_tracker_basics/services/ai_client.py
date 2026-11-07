@@ -1,6 +1,10 @@
+from functools import lru_cache
+
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError
+
+from task_tracker_basics.config import settings
 
 class AIServiceError(Exception):
     pass
@@ -28,10 +32,14 @@ class GeminiClient:
                 config=types.GenerateContentConfig(temperature=0.3)
             )
         except APIError as e:
-            raise AIServiceError(f"AI-provider raised exception + {e.code}") from e
+            raise AIServiceError(f"AI-provider raised exception {e.code}") from e
             
         if response.text:
             return response.text.strip()
         raise AIServiceError("Problems with response")
+
+@lru_cache
+def get_ai_client() -> GeminiClient:
+    return GeminiClient(api_key=settings.gemini_api_key, model_name=settings.gemini_model)
 
 
