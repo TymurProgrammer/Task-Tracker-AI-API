@@ -42,7 +42,6 @@ def create_refresh_token(user_id: int) -> str:
 
 
 def decode_token(token: str, expected_type: str) -> int:
-    """Повертає user_id або кидає jwt.InvalidTokenError."""
     payload = jwt.decode(
         token,
         settings.secret_key,
